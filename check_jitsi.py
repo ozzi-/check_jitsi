@@ -123,6 +123,7 @@ class CheckJitsi:
                        help='Warning threshold for check value', default="")
         p.add_argument('-c', '--critical', dest='threshold_critical', metavar='THRESHOLD',
                        help='Critical threshold for check value', default="")
+        p.add_argument("--all-metrics", action='store_true', required=False)
         p.add_argument("--user", help="HTTP Basic Auth User", required=False)
         p.add_argument("--password", help="HTTP Basic Auth Password", required=False)
         p.add_argument("--ignore-metric", dest='metric_blacklist', metavar='METRIC', action='append', default=[],
