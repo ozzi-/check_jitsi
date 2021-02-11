@@ -28,6 +28,7 @@
 import argparse
 import re
 import sys
+from requests.auth import HTTPBasicAuth
 from enum import Enum
 
 import requests
@@ -100,7 +101,8 @@ class CheckJitsi:
                               'jitter_aggregate', 'total_no_payload_channels', 'total_no_transport_channels']
 
         self.parse_args()
-        self._baseurl = "http://{}:{}".format(self.args.hostname, self.args.port)
+
+        self._baseurl = ("https" if self.args.port=="443" else "http")+"://{}:{}".format(self.args.hostname, self.args.port)
 
         self._state = CheckState.OK
 
@@ -121,7 +123,8 @@ class CheckJitsi:
                        help='Warning threshold for check value', default="")
         p.add_argument('-c', '--critical', dest='threshold_critical', metavar='THRESHOLD',
                        help='Critical threshold for check value', default="")
-        p.add_argument("--all-metrics", action='store_true', required=False)
+        p.add_argument("--user", help="HTTP Basic Auth User", required=False)
+        p.add_argument("--password", help="HTTP Basic Auth Password", required=False)
         p.add_argument("--ignore-metric", dest='metric_blacklist', metavar='METRIC', action='append', default=[],
                        required=False,
                        help='Ignore this metric in the performance data')
@@ -172,9 +175,15 @@ class CheckJitsi:
 
     def _fetch(self, uri):
         try:
-            response = requests.get(
-                "{}{}".format(self._baseurl, uri),
-            )
+            if (self.args.user) and (self.args.password):
+                response = requests.get(
+                    "{}{}".format(self._baseurl, uri),
+                    auth=HTTPBasicAuth(self.args.user, self.args.password)
+                )
+            else:
+                response = requests.get(
+                    "{}{}".format(self._baseurl, uri),
+                )
         except requests.exceptions.ConnectTimeout:
             self.check_result(CheckState.UNKNOWN, "Could not connect to JVB API: Connection timeout")
         except requests.exceptions.SSLError:
