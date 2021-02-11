@@ -86,6 +86,7 @@ optional arguments:
                         Critical threshold for check value
   --user USER           HTTP Basic Auth User
   --password PASSWORD   HTTP Basic Auth Password
+  --all-metrics
   --ignore-metric METRIC
                         Ignore this metric in the performance data
   --append-metric METRIC
