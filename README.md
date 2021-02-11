@@ -67,9 +67,10 @@ More more details see here https://github.com/jitsi/jitsi-videobridge/issues/112
 ```
 usage: check_jitsi.py [-h] [-H HOSTNAME] [-p PORT] -m
                       {health,participants,conferences,audiochannels,videochannels,videostreams,total_conferences_completed,total_conferences_created,total_conferences_failed,total_partially_failed_conferences,jitter_aggregate,total_no_payload_channels,total_no_transport_channels}
-                      [-w THRESHOLD] [-c THRESHOLD] [--all-metrics]
-                      [--ignore-metric METRIC] [--append-metric METRIC]
-
+                      [-w THRESHOLD] [-c THRESHOLD] [--user USER]
+                      [--password PASSWORD] [--ignore-metric METRIC]
+                      [--append-metric METRIC]
+                      
 Check command for JVB via API
 
 optional arguments:
@@ -83,7 +84,8 @@ optional arguments:
                         Warning threshold for check value
   -c THRESHOLD, --critical THRESHOLD
                         Critical threshold for check value
-  --all-metrics
+  --user USER           HTTP Basic Auth User
+  --password PASSWORD   HTTP Basic Auth Password
   --ignore-metric METRIC
                         Ignore this metric in the performance data
   --append-metric METRIC
